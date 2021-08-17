@@ -1,59 +1,83 @@
-This project was bootstrapped with
-[Create React App](https://github.com/facebook/create-react-app).
+# 💎 DApp Template
+Set up a modern decentralized web app quickly using React + Solidity.
 
-## Available Scripts
+Prerequisites: [Node](https://nodejs.org/en/download/) plus [Yarn](https://classic.yarnpkg.com/en/docs/install/) and [Git](https://git-scm.com/downloads)
 
-In the project directory, you can run:
+# ⚡️ Quick Start
 
-### `yarn start`
+### Create a repo for your app
+> Install from the command line ⚡️
+ 
+```bash
+$ gh repo create your-dapp-name --template='web3-os/dapp-template'
 
-Runs the app in the development mode.<br /> Open
-[http://localhost:3000](http://localhost:3000) to view it in the browser.
+# Follow the prompts
+> Public Y
+> This will create 'your-dapp-name' in your current directory. Y
+> Create a local project directory for username/your-dapp-name? Y
 
-The page will reload if you make edits.<br /> You will also see any lint errors
-in the console.
+# Pull in the template code into your local repository that was just created
+cd your-dapp-name
+$ git pull origin main
+```
+### Start your local blockchain
+> Install your packages and start your 👷‍ Hardhat chain
 
-### `yarn test`
+```bash
+$ yarn install
+$ yarn chain
+```
 
-Launches the test runner in the interactive watch mode.<br /> See the section
-about
-[running tests](https://facebook.github.io/create-react-app/docs/running-tests)
-for more information.
+### Start your Web/UI
+> Open a second terminal window and start your 📱 frontend
 
-### `yarn build`
+```bash
+$ yarn start
+```
 
-Builds the app for production to the `build` folder.<br /> It correctly bundles
-React in production mode and optimizes the build for the best performance.
+> Open a third terminal window and deploy your 🎨 contract
 
-The build is minified and the filenames include the hashes.<br /> Your app is
-ready to be deployed!
+```bash
+$ yarn deploy
+```
 
-See the section about
-[deployment](https://facebook.github.io/create-react-app/docs/deployment) for
-more information.
+# 📚 Instructions
 
-### `yarn eject`
+🔏 Edit your smart contract `YourContract.sol` in `./contracts`
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+📝 Edit your frontend `App.jsx` in `./src/components`
 
-If you aren’t satisfied with the build tool and configuration choices, you can
-`eject` at any time. This command will remove the single build dependency from
-your project.
+💼 Edit your deployment scripts in `./scripts/deploy.js`
 
-Instead, it will copy all the configuration files and the transitive
-dependencies (webpack, Babel, ESLint, etc) right into your project so you have
-full control over them. All of the commands except `eject` will still work, but
-they will point to the copied scripts so you can tweak them. At this point
-you’re on your own.
+📱 Open http://localhost:3000 to see the app
 
-You don’t have to ever use `eject`. The curated feature set is suitable for
-small and middle deployments, and you shouldn’t feel obligated to use this
-feature. However we understand that this tool wouldn’t be useful if you couldn’t
-customize it when you are ready for it.
+# Workflow for making changes
 
-## Learn More
+🔏 Make edits to your smart contract(s) and compile the latest changes by running:
 
-You can learn more in the
-[Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```bash
+$ yarn compile
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+This will generate a new *Contract ABI* under `src/artifacts`, removing the need to update anything in your frontend.
+
+📝 Deploy your new contract:
+
+```bash
+$ yarn deploy
+```
+
+# 🔭 Learning Solidity
+
+📕 Read the docs: https://docs.soliditylang.org
+
+📚 Go through each topic from [solidity by example](https://solidity-by-example.org) editing `YourContract.sol`
+
+- [Primitive Data Types](https://solidity-by-example.org/primitives/)
+- [Mappings](https://solidity-by-example.org/mapping/)
+- [Structs](https://solidity-by-example.org/structs/)
+- [Modifiers](https://solidity-by-example.org/function-modifier/)
+- [Events](https://solidity-by-example.org/events/)
+- [Inheritance](https://solidity-by-example.org/inheritance/)
+- [Payable](https://solidity-by-example.org/payable/)
+- [Fallback](https://solidity-by-example.org/fallback/)
