@@ -14,8 +14,8 @@ module.exports = {
     artifacts: './src/artifacts',
   },
   networks: {
-    localhost: {
-      url: "http://localhost:8545",
+    hardhat: {
+      chainId: 1337
     },
     /*
       To set up a config for another network:
