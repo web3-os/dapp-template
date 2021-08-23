@@ -6,7 +6,7 @@ Prerequisites: [Node](https://nodejs.org/en/download/) plus [Yarn](https://class
 # ⚡️ Quick Start
 
 ### Create a repo for your app
-> Install from the command line ⚡️
+> OPTIONAL: Install from the command line ⚡️
  
 ```bash
 $ gh repo create your-dapp-name --template='web3-os/dapp-template'
