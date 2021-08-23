@@ -1,20 +1,18 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { ethereum } from '../utils/global';
-import { NETWORK, NETWORKS } from "../utils/constants";
 import {
   ChakraProvider,
   Box,
-  Text,
-  Link,
   VStack,
-  Code,
   Grid,
   theme,
 } from "@chakra-ui/react"
 import { ColorModeSwitcher } from "../ColorModeSwitcher"
 import { ethers } from 'ethers';
 import { useContractExists, useSigner } from '../hooks';
-// import YourContract from '../artifacts/contracts/YourContract.sol/YourContract.json';
+
+// This is where you can bring in the latest Contract ABI
+import YourContract from '../artifacts/contracts/YourContract.sol/YourContract.json';
 
 const CONTRACT_ADDRESS = '';
 
@@ -22,6 +20,7 @@ export const App = () => {
   const [injectedProvider, setInjectedProvider] = useState({});
   const userSigner: any = useSigner(injectedProvider);
   const [address, setAddress] = useState('');
+
   // Check if your contract has been deployed
   const contractIsDeployed = useContractExists(injectedProvider, CONTRACT_ADDRESS);
 
