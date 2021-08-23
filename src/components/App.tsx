@@ -1,4 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
+import { ethereum } from '../utils/global';
+import { NETWORK, NETWORKS } from "../utils/constants";
 import {
   ChakraProvider,
   Box,
@@ -10,29 +12,59 @@ import {
   theme,
 } from "@chakra-ui/react"
 import { ColorModeSwitcher } from "../ColorModeSwitcher"
-import { ethereum } from '../utils/global';
+import { ethers } from 'ethers';
+import { useContractExists, useSigner } from '../hooks';
+// import YourContract from '../artifacts/contracts/YourContract.sol/YourContract.json';
+
+const CONTRACT_ADDRESS = '';
 
 export const App = () => {
-  const [name, setName] = useState('');
-  const [account, setAccount] = useState('');
+  const [injectedProvider, setInjectedProvider] = useState({});
+  const userSigner: any = useSigner(injectedProvider);
+  const [address, setAddress] = useState('');
+  // Check if your contract has been deployed
+  const contractIsDeployed = useContractExists(injectedProvider, CONTRACT_ADDRESS);
 
   useEffect(() => {
     connect();
   }, [])
 
+  const loadProvider = useCallback(async () => {
+    setInjectedProvider(new ethers.providers.Web3Provider(ethereum));
+
+    ethereum.on("chainChanged", (chainId: number) => {
+      console.log(`chain changed to ${chainId}! updating providers`);
+      setInjectedProvider(new ethers.providers.Web3Provider(ethereum));
+    });
+
+    ethereum.on("accountsChanged", () => {
+      console.log(`account changed!`);
+      setInjectedProvider(new ethers.providers.Web3Provider(ethereum));
+    });
+
+    // Subscribe to session disconnection
+    ethereum.on("disconnect", (code: any, reason: any) => {
+      console.log(code, reason);
+    });
+  }, [setInjectedProvider]);
+
+  useEffect(() => {
+    loadProvider()
+  }, [])
+
   async function connect() {
     const accounts = await ethereum.request({ method: 'eth_accounts' });
     if (accounts.length > 0) {
-      const account = accounts[0]
-      setAccount(account);
+      const address = accounts[0]
+      setAddress(address);
     }
   }
 
   async function requestAccount() {
     try {
       const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
-      const account = accounts[0]
-      setAccount(account);
+      const address = accounts[0]
+      setAddress(address);
     } catch (error) {
       console.error('Something went wrong...', error)
     }
@@ -54,11 +86,11 @@ export const App = () => {
                   Use this template to quickly write, deploy, and interact with your smart contracts inside a single repository!
                 </p>
 
-                { account ? <p 
+                { address ? <p 
                   className='description'
                   onClick={requestAccount}
                 >
-                  <code className='code'>{account}</code>
+                  <code className='code'>{address}</code>
                 </p> : <p 
                   className='description'
                   onClick={requestAccount}
