@@ -1,5 +1,5 @@
-import { utils } from 'ethers';
 import { useEffect, useState } from 'react';
+import { utils } from 'ethers';
 
 /*
   ~ What it does? ~
@@ -26,8 +26,10 @@ const useContractExists = (injectedProvider: any, contractAddress: string) => {
   useEffect(() => {
     const checkDeployment = async () => {
       if (!utils.isAddress(contractAddress)) return false;
-      const bytecode = await injectedProvider?.getCode(contractAddress);
-      setContractIsDeployed(bytecode !== "0x0");
+      if (injectedProvider?.getCode) {
+        const bytecode = await injectedProvider?.getCode(contractAddress);
+        setContractIsDeployed(bytecode !== "0x0");
+      }
     };
     if (injectedProvider) checkDeployment();
   }, [injectedProvider, contractAddress]);

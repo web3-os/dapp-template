@@ -9,36 +9,38 @@ import {
 } from "@chakra-ui/react"
 import { ColorModeSwitcher } from "../ColorModeSwitcher"
 import { ethers } from 'ethers';
-import { useContractExists, useSigner } from '../hooks';
+import { useContract, useContractExists, useSigner } from '../hooks';
 
-// This is where you can bring in the latest Contract ABI
-import YourContract from '../artifacts/contracts/YourContract.sol/YourContract.json';
+// This is where you can bring in the latest Contract ABI 👇
+// import YourContract from '../artifacts/contracts/YourContract.sol/YourContract.json';
 
 const CONTRACT_ADDRESS = '';
 
 export const App = () => {
   const [injectedProvider, setInjectedProvider] = useState({});
   const userSigner: any = useSigner(injectedProvider);
-  const [address, setAddress] = useState('');
 
   // Check if your contract has been deployed
   const contractIsDeployed = useContractExists(injectedProvider, CONTRACT_ADDRESS);
+  const contractABI: any = useContract(CONTRACT_ADDRESS);
+  const [address, setAddress] = useState('');
 
   useEffect(() => {
     connect();
   }, [])
 
   const loadProvider = useCallback(async () => {
-    setInjectedProvider(new ethers.providers.Web3Provider(ethereum));
+    const provider = new ethers.providers.Web3Provider(ethereum);
+    setInjectedProvider(provider);
 
     ethereum.on("chainChanged", (chainId: number) => {
       console.log(`chain changed to ${chainId}! updating providers`);
-      setInjectedProvider(new ethers.providers.Web3Provider(ethereum));
+      setInjectedProvider(provider);
     });
 
     ethereum.on("accountsChanged", () => {
       console.log(`account changed!`);
-      setInjectedProvider(new ethers.providers.Web3Provider(ethereum));
+      setInjectedProvider(provider);
     });
 
     // Subscribe to session disconnection
@@ -52,10 +54,14 @@ export const App = () => {
   }, [])
 
   async function connect() {
-    const accounts = await ethereum.request({ method: 'eth_accounts' });
-    if (accounts.length > 0) {
-      const address = accounts[0]
-      setAddress(address);
+    try {
+      const accounts = await ethereum.request({ method: 'eth_accounts' });
+      if (accounts.length > 0) {
+        const address = accounts[0];
+        setAddress(address);
+      }
+    } catch (error) {
+      console.error(error);
     }
   }
 

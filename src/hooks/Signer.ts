@@ -22,7 +22,6 @@ const useSigner = (injectedProvider: any) => {
   useMemo(() => {
     console.log('🦊 Using injected provider');
     const injectedSigner = injectedProvider._isProvider ? injectedProvider.getSigner() : injectedProvider;
-    console.log('signer', signer);
     setSigner(injectedSigner);
   }, [injectedProvider]);
 
